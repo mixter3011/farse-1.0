@@ -1,7 +1,9 @@
+# The Data is from 2003 to 2024
+
 import numpy as np
 import pandas as pd
 
-file_path = 'farse 1.0/Market Risk/Equity/data/NIFTY 100_Historical_PR_01022006to01072024.csv'
+file_path = 'farse 1.0/Market Risk/Equity/data/NIFTY 100_Historical_PR_01011990to01072024.csv'
 nifty_100_data = pd.read_csv(file_path, parse_dates=['Date'])
 
 nifty_100_data.set_index('Date', inplace=True)
