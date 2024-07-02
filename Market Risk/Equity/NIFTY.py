@@ -113,23 +113,26 @@ files = [
 
 ]
 
-dataframes = {}
-
-for name, path in files:
-    dataframes[name] = pd.read_csv(path)
-
-def calculate_var(df, confidence_level=0.95):
-    # Assume the last column is the price
-    returns = df.iloc[:, -1].pct_change().dropna()
-    var = np.percentile(returns, (1 - confidence_level) * 100)
+def calculate_var(file_path, confidence_level=0.95):
+    data = pd.read_csv(file_path)
+    returns = data['Close'].pct_change().dropna()  
+    var = np.percentile(returns, (1 - confidence_level) * 100)  
     return var
 
-var_results = {}
+var_values = {}
 
-for name, df in dataframes.items():
-    var_results[name] = calculate_var(df)
+for name, file_path in files:
+    try:
+        var = calculate_var(file_path)
+        var_values[name] = var
+    except Exception as e:
+        print(f"Error processing {file_path}: {e}")
 
-for name, var in var_results.items():
-    print(f"{name}: VaR = {var}")
+mean_var = np.mean(list(var_values.values())) * 100
+
+print(f"Mean VaR value: {mean_var}")
+
+for name, var in var_values.items():
+    print(f"{name}: {var}")
 
 
